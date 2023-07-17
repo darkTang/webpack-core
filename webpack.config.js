@@ -2,6 +2,8 @@ const ESLintWebpackPlugin = require("eslint-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
+const { VueLoaderPlugin } = require("vue-loader");
+const { DefinePlugin } = require("webpack");
 
 module.exports = {
   mode: "development",
@@ -28,11 +30,38 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          // {
+          //   loader: "postcss-loader",
+          //   options: {
+          //     postcssOptions: {
+          //       plugins: ["postcss-preset-env"],
+          //     },
+          //   },
+          // },
+          // 这样配置会自动找postcss.config.js配置文件
+          "postcss-loader",
+        ],
       },
       {
         test: /\.less$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          // postcss-loader要在css-loader前面，less-loader后面
+          // {
+          //   loader: "postcss-loader",
+          //   options: {
+          //     postcssOptions: {
+          //       plugins: ["postcss-preset-env"],
+          //     },
+          //   },
+          // },
+          "postcss-loader",
+          "less-loader",
+        ],
       },
       {
         test: /\.s[a|c]ss$/,
@@ -64,6 +93,7 @@ module.exports = {
       {
         test: /\.html$/,
         use: "html-loader",
+        enforce: "post",
       },
       {
         test: /\.js$/,
@@ -82,6 +112,10 @@ module.exports = {
         test: /\.ts$/,
         use: "ts-loader",
       },
+      {
+        test: /\.vue$/,
+        use: "vue-loader",
+      },
     ],
   },
   plugins: [
@@ -98,7 +132,13 @@ module.exports = {
       // 只检查src下的文件
       context: path.resolve(__dirname, "src"),
     }),
+    new VueLoaderPlugin(),
+    new DefinePlugin({
+      __VUE_PROD_DEVTOOLS__: false,
+      __VUE_OPTIONS_API__: false,
+    }),
   ],
+  // 开启开发服务器，则不会输出资源，在内存中编译打包
   devServer: {
     hot: true,
   },

@@ -50,3 +50,36 @@
 
 ## 9. 处理ts(yarn add typescript ts-loader -D)
 需要创建tsconfig.json文件
+
+## 10. 开发环境和生产环境
+1. 路径问题：相对路径还是相对于项目根目录而言，但是绝对路径是相当于当前目录
+2. 生产模式自动压缩html和js代码
+3. css-minimizer-webpack-plugin用来压缩css代码
+4. sourceMap 开发模式下建议inline-source-map，生产模式建议source-map
+  
+## 11. 样式兼容性处理(yarn add postcss-loader postcss postcss-preset-env -D)
+1. 告知 webpack 为目标(target)指定一个环境。默认值为 "browserslist"，如果没有找到 browserslist 的配置，则默认为 "web"
+2. package.json配置browserslist
+3. [browserslist](https://zqianduan.com/pages/browserslist-config.html#%E8%83%8C%E6%99%AF)
+```json
+// webpack会给以下浏览器做兼容性处理
+"browserslist": [
+  "> 1%",   // 全球超过1%人使用的浏览器
+  "last 2 versions" // 所有浏览器兼容到最后两个版本根据 CanIUse.com 踪的版本
+]
+```
+
+## 12. 处理vue2(yarn add vue@2 vue-template-compiler@2 vue-loader@15 -D)
+1. html-loader和vue-loader同时存在需要注意要将vue-loader放在前面，或者让html-loader加上enforce: 'post'，表示该loader置后
+2. enforce: "pre"|"post"
+
+## 处理Vue3(yarn add vue vue-loader @vue/compiler-sfc -D)
+1. 不能处理<script lang="ts" setup></script>写法，可以处理
+```vue
+export default {
+  setup() {
+    
+  }
+}
+```
+2. 其中 __VUE_OPTIONS_API__ 和 __VUE_PROD_DEVTOOLS__ 对应的值都是 Boolean 类型，分别代表的是：__VUE_OPTIONS_API__：表示是否支持 options api 的写法，默认是 true；__VUE_PROD_DEVTOOLS__：表示生产包是否要继续支持 devtools 插件，默认是 false；即便它们都有默认值，可以不进行设置，但是 Vue 希望我们自己去设置这两个配置，毕竟如果完全拥抱 Vue3 的话，写法上没有必要在使用 options api 的格式，这样在打包的时候，包的体量上也会有所减少.
