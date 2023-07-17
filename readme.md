@@ -1,4 +1,4 @@
-# webpack_core
+# 一、webpack基础配置
 1. webpack 默认导入路径必须要带文件后缀。
 2. vite 默认导入路径不需要带文件后缀，内部做了处理。
 3. webpack 本身只能处理 js、json 文件。
@@ -50,14 +50,8 @@
 
 ## 9. 处理ts(yarn add typescript ts-loader -D)
 需要创建tsconfig.json文件
-
-## 10. 开发环境和生产环境
-1. 路径问题：相对路径还是相对于项目根目录而言，但是绝对路径是相当于当前目录
-2. 生产模式自动压缩html和js代码
-3. css-minimizer-webpack-plugin用来压缩css代码
-4. sourceMap 开发模式下建议inline-source-map，生产模式建议source-map
   
-## 11. 样式兼容性处理(yarn add postcss-loader postcss postcss-preset-env -D)
+## 10. 样式兼容性处理(yarn add postcss-loader postcss postcss-preset-env -D)
 1. 告知 webpack 为目标(target)指定一个环境。默认值为 "browserslist"，如果没有找到 browserslist 的配置，则默认为 "web"
 2. package.json配置browserslist
 3. [browserslist](https://zqianduan.com/pages/browserslist-config.html#%E8%83%8C%E6%99%AF)
@@ -69,17 +63,76 @@
 ]
 ```
 
-## 12. 处理vue2(yarn add vue@2 vue-template-compiler@2 vue-loader@15 -D)
+## 11. 处理vue2(yarn add vue@2 vue-template-compiler@2 vue-loader@15 -D)
 1. html-loader和vue-loader同时存在需要注意要将vue-loader放在前面，或者让html-loader加上enforce: 'post'，表示该loader置后
 2. enforce: "pre"|"post"
 
-## 处理Vue3(yarn add vue vue-loader @vue/compiler-sfc -D)
+## 12. 处理Vue3(yarn add vue vue-loader @vue/compiler-sfc -D)
 1. 不能处理<script lang="ts" setup></script>写法，可以处理
 ```vue
 export default {
   setup() {
-    
+
   }
 }
 ```
 2. 其中 __VUE_OPTIONS_API__ 和 __VUE_PROD_DEVTOOLS__ 对应的值都是 Boolean 类型，分别代表的是：__VUE_OPTIONS_API__：表示是否支持 options api 的写法，默认是 true；__VUE_PROD_DEVTOOLS__：表示生产包是否要继续支持 devtools 插件，默认是 false；即便它们都有默认值，可以不进行设置，但是 Vue 希望我们自己去设置这两个配置，毕竟如果完全拥抱 Vue3 的话，写法上没有必要在使用 options api 的格式，这样在打包的时候，包的体量上也会有所减少.
+
+# 二、webpack高级配置
+## 1. 开发环境和生产环境的sourceMap
+1. 路径问题：相对路径还是相对于项目根目录而言，但是绝对路径是相当于当前目录
+2. 生产模式自动压缩html和js代码
+3. css-minimizer-webpack-plugin用来压缩css代码
+4. sourceMap 开发模式下建议inline-source-map/cheap-module-source-map，生产模式建议source-map
+5. inline-source-map会将source map作为Data URI嵌入到编译后的文件中，因此生成的文件体积会比较大。但是由于包含了完整的source map信息，因此可以提供最高的精度，可以精确到每一行每一列的位置。
+6. cheap-module-source-map则会生成一个单独的source map文件，不会将其嵌入到编译后的文件中。生成的source map只包含行信息，不包含列信息，因此精度相对较低。但是由于不包含列信息，因此生成的文件体积会比较小。
+
+## 2. HMR/热模替换
+1. 在程序运行中，替换、添加或删除模块，而无需重新加载整个页面
+2. devServer开启hot: true; 只能让css进行HMR
+3. JS要想开启HMR，需要在main.js中配置
+```js
+// 判断是否支持热模替换，实际开发中，vue和react已经帮我们做了处理
+if (module.hot) {
+  module.hot.accept("./js/count.js");
+  // 第二个参数传入一个函数，当文件发生变化时，调用函数
+  // module.hot.accept("./js/count.js", function(...args) {
+  //   console.log(args);
+  // });
+}
+```
+
+## 3. oneOf 
+1. 对于loader规则而言，成功匹配后，还会继续往下查找loader，效率低
+2. oneOf--规则数组，当规则匹配时，只使用第一个匹配规则。
+3. vue-loader不允许放在oneOf中，需要放在oneOf前面
+
+## 4. include/exclude
+1. 开发时我们需要使用第三方的库或插件，所有文件都下载到node_modules中了，而这些文件是不需要编译可以直接使用的。所以在对js文件进行处理时，要排除node_modules下面的文件。
+2. include和exclude只能使用一个，同时使用会报错
+
+## 5. cache缓存
+每次打包js文件都需要经过eslint检查和babel编译，速度比较慢。我们可以缓存之前的eslint检查和babel编译，这样二次打包速度就会更快。
+
+1. eslint会默认开启缓存
+2. babel需要配置
+```js
+options: {
+  cacheDirectory: true, // 开启babel缓存
+  cacheCompression: false, // 关闭缓存文件压缩，包速度
+},
+```
+
+## 6. thread多线程打包(yarn add thread-loader -D)
+对js文件的处理主要就是eslint、babel、terser(webpack内置，生产模式下会开启进行js文件压缩)三个工具，我们可以开启多进程同时处理js文件。
+注意：仅在特别耗时的操作中使用，因为每个进程启动需要大约600ms左右的开销。
+
+1. webpack v5 开箱即带有最新版本的 terser-webpack-plugin。如果你使用的是 webpack v5 或更高版本，同时希望自定义配置，那么仍需要安装terser-webpack-plugin。如果使用 webpack v4，则必须安装 terser-webpack-plugin v4 的版本。
+2. thread-loader要放在babel-loader前面，也就是说先执行baber-loader，然后再运行thread-loader
+
+## 7. tree shaking减少打包体积
+开发时我们定义了一些工具函数库，或者饮用、、引用第三方工具函数库或组件库。如果没有特殊处理，我们打包时会引入整个库，但是实际上我们可能只用上一小部分。
+1. tree shaking用来一出JS中没有用到的代码。
+2. 它依赖于esm。
+3. webpack默认开启这个功能。
+

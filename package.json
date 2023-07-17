@@ -30,6 +30,8 @@
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
+    "terser-webpack-plugin": "^5.3.9",
+    "thread-loader": "^4.0.2",
     "ts-loader": "^9.4.4",
     "vue": "^3.3.4",
     "vue-loader": "^17.0.1",

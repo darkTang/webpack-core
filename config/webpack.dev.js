@@ -3,7 +3,7 @@ const webpackBase = require("./webpack.base");
 
 module.exports = merge(webpackBase, {
   mode: "development",
-  devtool: "inline-source-map",
+  devtool: "cheap-module-source-map",
   devServer: {
     hot: true,
   },

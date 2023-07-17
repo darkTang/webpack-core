@@ -22,3 +22,12 @@ console.log(sub(10, 2));
 
 // vue3配置
 createApp(App).mount("#app");
+
+// 判断是否支持热模替换，实际开发中，vue和react已经帮我们做了处理
+if (module.hot) {
+  module.hot.accept("./js/count.js");
+  // 第二个参数传入一个函数，当文件发生变化时，调用函数
+  // module.hot.accept("./js/count.js", function(...args) {
+  //   console.log(args);
+  // });
+}

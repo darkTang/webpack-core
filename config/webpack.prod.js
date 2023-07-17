@@ -1,6 +1,7 @@
 const { merge } = require("webpack-merge");
 const webpackBase = require("./webpack.base");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = merge(webpackBase, {
   // 生产模式自动压缩html和js代码
@@ -12,6 +13,10 @@ module.exports = merge(webpackBase, {
     minimizer: [
       // 压缩css代码
       new CssMinimizerPlugin(),
+      // 开启多进程压缩
+      new TerserPlugin({
+        parallel: webpackBase.threads,
+      }),
     ],
   },
 });
