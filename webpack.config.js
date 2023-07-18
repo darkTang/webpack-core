@@ -167,6 +167,7 @@ module.exports = {
   ],
   // 开启开发服务器，则不会输出资源，在内存中编译打包
   devServer: {
+    open: true,
     // 开启热模替换
     hot: true,
   },

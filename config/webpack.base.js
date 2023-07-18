@@ -16,9 +16,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "../dist"),
     // 入口文件打包输出文件名
-    filename: "js/[name].js",
+    filename: "js/[name]-[contenthash:10].js",
     // 打包输出的其他文件命名
-    chunkFilename: "js/[name]-chunk.js",
+    chunkFilename: "js/[name]-chunk-[contenthash:10].js",
     // 指定图片资源的输出目录，可以统一为所有静态资源命名，默认是[hash][ext][query]
     // assetModuleFilename: "images/[hash][ext][query]",
     clean: true,
@@ -131,8 +131,8 @@ module.exports = {
       inject: "body",
     }),
     new MiniCssExtractPlugin({
-      filename: "css/chunk-[contenthash].css",
-      chunkFilename: "css/[name]-chunk.css", // 动态导入css文件命名，与动态引入js类似
+      filename: "css/chunk-[contenthash:10].css",
+      chunkFilename: "css/[name]-chunk-[contenthash:10].css", // 动态导入css文件命名，与动态引入js类似
     }),
     new VueLoaderPlugin(),
     // 会自动应用.eslintrc.js的文件的配置

@@ -183,3 +183,40 @@ webpack5已经内置，只需要在import依赖时开启即可。
 见main.js。
 [配置](https://webpack.docschina.org/guides/code-splitting/#prefetchingpreloading-modules)
 
+## 12. network cache
+将来开发时我们对静态资源会使用缓存来优化，这样浏览器第二次请求资源就能读取缓存了，速度很快。
+但是这样的话就会有一个问题, 因为前后输出的文件名是一样的，都叫 main.js，一旦将来发布新版本，因为文件名没有变化导致浏览器会直接读取缓存，不会加载新资源，项目也就没法更新了。
+所以我们从文件名入手，确保更新前后文件名不一样，这样就可以做缓存了。
+
+- 问题：
+当我们修改 math.js 文件再重新打包的时候，因为 contenthash 原因，math.js 文件 hash 值发生了变化（这是正常的）。
+但是 main.js 文件的 hash 值也发生了变化，这会导致 main.js 的缓存失效。明明我们只修改 math.js, 为什么 main.js 也会变身变化呢？
+
+- 原因：
+更新前：math.xxx.js, main.js 引用的 math.xxx.js
+更新后：math.yyy.js, main.js 引用的 math.yyy.js, 文件名发生了变化，间接导致 main.js 也发生了变化
+
+- 解决：
+配置文件中开启`runtimeChunk: true`
+将 hash 值单独保管在一个 runtime 文件中。
+我们最终输出三个文件：main、math、runtime。当 math 文件发送变化，变化的是 math 和 runtime 文件，main 不变。
+runtime 文件只保存文件的 hash 值和它们与文件关系，整个文件体积就比较小，所以变化重新请求的代价也小。
+
+## 13. core-js (yarn add core-js)
+过去我们使用 babel 对 js 代码进行了兼容性处理，其中使用`@babel/preset-env`智能预设来处理兼容性问题。
+它能将 ES6 的一些语法进行编译转换，比如箭头函数、点点点运算符等。但是如果是 async 函数、promise 对象、数组的一些方法（includes）等，它没办法处理。
+所以此时我们 js 代码仍然存在兼容性问题，一旦遇到低版本浏览器会直接报错。所以我们想要将 js 兼容性问题彻底解决。
+
+- 解决：
+core-js 是专门用来做 ES6 以及以上 API 的 polyfill。
+polyfill翻译过来叫做垫片/补丁。就是用社区上提供的一段代码，让我们在不兼容某些新特性的浏览器上，使用该新特性。
+
+- 用法：
+1. 直接引入   
+在打包入口文件直接引入即可`import 'core-js'`，但是这种写法会将所有的语法打包，会导致包体积很大
+
+2. 按需引入
+比如只引入promise，可以直接引入`import 'core-js/es/promise'`即可
+
+3. 自动引入
+在`babel.config.js`预设中配置

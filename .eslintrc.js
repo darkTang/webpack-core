@@ -4,6 +4,9 @@ module.exports = {
     node: true, // 开启node全局变量
     browser: true, // 开启浏览器全局变量
   },
+  // ESLint默认解析器不支持动态导入 import导入会报错
+  // 通过ESLint解析器@babel/eslint-parser来解决
+  parser: "@babel/eslint-parser",
   parserOptions: {
     ecmaVersion: 6,
     sourceType: "module",

@@ -5,12 +5,13 @@ import "./css/index.css";
 import "./css/iconfont.css";
 import "./less/index.less";
 import "./sass/index.scss";
+// import "core-js";
 // import Vue from "vue";
 // import App from './vue2/index.vue'
 import { createApp } from "vue";
 import App from "./vue3/index.vue";
 
-let a = 2;
+// let a = 2;
 // console.log(count(a, 3));
 console.log(sum(1, 2, 3, 4));
 console.log(sub(10, 2));
@@ -30,6 +31,11 @@ if (module.hot) {
   // module.hot.accept("./js/count.js", function(...args) {
   //   console.log(args);
   // });
+
+  // 可以传一个数组，当其中任何一个依赖更新时，都会调用
+  // module.hot.accept(['./content.js', './math.js'], (...args) => {
+  //   console.log(args);
+  // })
 }
 
 document.getElementById("btn").addEventListener("click", function () {
