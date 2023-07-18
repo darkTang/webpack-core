@@ -2,6 +2,7 @@ const { merge } = require("webpack-merge");
 const webpackBase = require("./webpack.base");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = merge(webpackBase, {
   // 生产模式自动压缩html和js代码
@@ -9,6 +10,14 @@ module.exports = merge(webpackBase, {
   // 避免在生产中使用 inline-*** 和 eval-***，因为它们会增加 bundle 体积大小，并降低整体性能。
   // source-map打包会生成.map文件
   devtool: "source-map",
+  plugins: [
+    new WorkboxPlugin.GenerateSW({
+      // 这些选项帮助快速启用 ServiceWorkers
+      // 不允许遗留任何“旧的” ServiceWorkers
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
+  ],
   // 打包优化
   optimization: {
     minimizer: [
