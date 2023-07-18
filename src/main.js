@@ -1,4 +1,4 @@
-import count from "./js/count.js";
+// import count from "./js/count.js";
 import sum from "@/js/sum";
 import sub from "./ts/index";
 import "./css/index.css";
@@ -11,7 +11,7 @@ import { createApp } from "vue";
 import App from "./vue3/index.vue";
 
 let a = 2;
-console.log(count(a, 3));
+// console.log(count(a, 3));
 console.log(sum(1, 2, 3, 4));
 console.log(sub(10, 2));
 
@@ -31,3 +31,23 @@ if (module.hot) {
   //   console.log(args);
   // });
 }
+
+document.getElementById("btn").addEventListener("click", function () {
+  // 按需加载
+  // /* webpackChunkName: "count" */ webpack魔法命名，传递给chunkFilename
+  // 开启webpackPreload
+  /* webpackPreload: true */
+  // 开启webpackPrefetch
+  /* webpackPrefetch: true */
+  import(
+    /* webpackChunkName: "count" */
+    /* webpackPreload: true */
+    "./js/count.js"
+  )
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});

@@ -92,7 +92,7 @@ export default {
 2. devServer开启hot: true; 只能让css进行HMR
 3. JS要想开启HMR，需要在main.js中配置
 ```js
-// 判断是否支持热模替换，实际开发中，vue和react已经帮我们做了处理
+// 判断是否支持热模替换，实际开发中，vue和react已经帮我们做js的处理
 if (module.hot) {
   module.hot.accept("./js/count.js");
   // 第二个参数传入一个函数，当文件发生变化时，调用函数
@@ -135,4 +135,51 @@ options: {
 1. tree shaking用来一出JS中没有用到的代码。
 2. 它依赖于esm。
 3. webpack默认开启这个功能。
+
+## 8. Babel的优化(yarn add @babel/plugin-transform-runtime -D)
+Babel为编译的每个文件都插入辅助代码，使代码体积过大！
+Babel对一些公共方法使用了非常小的辅助代码，比如_extend，默认情况下会被添加到每一个需要它的文件中。
+可以将这些辅助代码作为一个独立模块，来避免重复引入。
+`@babel/plugin-transform-runtime`禁用Babel自动对每个文件的runtime注入，而是使所有辅助代码从这里引入
+
+## 9. 本地静态图片压缩(可能出现包下载不了的情况)
+`yarn add image-minimizer-webpack-plugin imagemin -D`
+1. 无损压缩：`yarn add imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-svgo -D`
+2. 有损压缩：`yarn add imagemin-gifsicle imagemin-mozjpeg imagemin-pngquant imagemin-svgo -D`
+
+## 10. 代码分割（code split）
+打包代码时会将所有js文件打包到一个文件中，体积太大。
+我们需要将打包生成的文件进行代码分割，生成多个js文件，渲染哪个页面只加载某个js文件，这样加载资源越少，加载速度就更快。
+> 见webpack.codesplit.js
+1. 分割文件
+2. 按需加载：一上来不加载js文件，需要时再加载js文件，import() 动态导入，见index.js
+
+## 11. preload/prefetch技术
+我们前面已经做了代码分割，同时会使用 import 动态导入语法来进行代码按需加载（我们也叫懒加载，比如路由懒加载就是这样实现的）。
+但是加载速度还不够好，比如：是用户点击按钮时才加载这个资源的，如果资源体积很大，那么用户会感觉到明显卡顿效果。
+我们想在浏览器空闲时间，加载后续需要使用的资源。我们就需要用上 Preload 或 Prefetch 技术。
+
+- Preload：告诉浏览器立即加载资源。
+- Prefetch：告诉浏览器在空闲时才开始加载资源。
+
+1. 它们共同点：
+都只会加载资源，并不执行。
+都有缓存。
+
+2. 它们区别：
+Preload加载优先级高，Prefetch加载优先级低。
+Preload只能加载当前页面需要使用的资源，Prefetch可以加载当前页面资源，也可以加载下一个页面需要使用的资源。
+
+3. 总结：
+当前页面优先级高的资源用 Preload 加载。
+下一个页面需要使用的资源用 Prefetch 加载。
+它们的问题：兼容性较差。
+
+4. 兼容性比较：
+我们可以去 Can I Use 网站查询 API 的兼容性问题。
+Preload 相对于 Prefetch 兼容性好一点。
+
+webpack5已经内置，只需要在import依赖时开启即可。
+见main.js。
+[配置](https://webpack.docschina.org/guides/code-splitting/#prefetchingpreloading-modules)
 

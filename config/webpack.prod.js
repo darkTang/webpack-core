@@ -9,6 +9,7 @@ module.exports = merge(webpackBase, {
   // 避免在生产中使用 inline-*** 和 eval-***，因为它们会增加 bundle 体积大小，并降低整体性能。
   // source-map打包会生成.map文件
   devtool: "source-map",
+  // 打包优化
   optimization: {
     minimizer: [
       // 压缩css代码
@@ -18,5 +19,20 @@ module.exports = merge(webpackBase, {
         parallel: webpackBase.threads,
       }),
     ],
+    // 代码分割
+    // 会将node_modules和import动态导入分别创建js单独文件
+    splitChunks: {
+      chunks: "all",
+      // 其他都用默认值
+      cacheGroups: {
+        defaultVendors: {
+          // 组名
+          test: /[\\/]node_modules[\\/]/, // 需要打包到一起的模块
+          priority: -10, // 权重（越大越高）
+          reuseExistingChunk: true, // 如果当前chunk包含已从主bundle中拆分出的模块，则它将被重用，而不是生成新的模块
+          name: "node_modules-chunk", // 给打包后的js文件命名，默认为随机数字
+        },
+      },
+    },
   },
 });
