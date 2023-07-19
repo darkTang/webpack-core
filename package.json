@@ -1,8 +1,14 @@
 {
-  "name": "deep_webpack",
+  "name": "webpack-core",
   "version": "1.0.0",
+  "description": "webpack5 core",
   "main": "index.js",
   "license": "MIT",
+  "author": "darkTang",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darkTang/webpack-core"
+  },
   "scripts": {
     "base": "webpack",
     "dev": "webpack serve",
@@ -46,7 +52,6 @@
     "workbox-webpack-plugin": "^7.0.0"
   },
   "dependencies": {
-    "axios": "^1.4.0",
     "core-js": "^3.31.1",
     "typescript": "^5.1.6"
   },
