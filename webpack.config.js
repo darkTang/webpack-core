@@ -25,6 +25,7 @@ module.exports = {
       path: require.resolve("path-browserify"),
     },
     // Add `.ts` and `.js` as a resolvable extension.
+    //  根据顺序会先去查找.js文件，存在即导入，不存在再去查找.ts文件，如果都查不到，则会报错
     extensions: [".js", ".ts"],
     alias: {
       "@": path.resolve(__dirname, "src"),
@@ -165,6 +166,13 @@ module.exports = {
     new DefinePlugin({
       __VUE_PROD_DEVTOOLS__: false,
       __VUE_OPTIONS_API__: false,
+      // 定义环境变量
+      // 因为在 webpack 中，所有的环境变量都会被当作字符串来处理，如果你不使用 JSON.stringify 方法来转换变量的值，那么在 webpack 中，这个变量的值可能会被当作一个未定义的变量来处理，从而导致编译错误。
+      process: {
+        erv: {
+          NODE_ENV: JSON.stringify("development"),
+        },
+      },
     }),
   ],
   // 开启开发服务器，则不会输出资源，在内存中编译打包
@@ -172,5 +180,7 @@ module.exports = {
     open: true,
     // 开启热模替换
     hot: true,
+    host: "localhost",
+    port: 8080,
   },
 };

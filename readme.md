@@ -58,7 +58,7 @@ npm run test    # 测试代码分割
 2. .eslintignore  配置vscode的eslint插件忽略检查哪些文件
 3. webpack中的eslint是不会检查dist文件夹和node_modules文件夹的
 
-### 8.2 babel(语法降级)(yarn add babel-loader @babel/preset-env -D)
+### 8.2 babel(语法降级)(yarn add @babel/core babel-loader @babel/preset-env -D)
 
 ## 9. 处理ts(yarn add typescript ts-loader -D)
 需要创建tsconfig.json文件
@@ -89,6 +89,18 @@ export default {
 }
 ```
 2. 其中 __VUE_OPTIONS_API__ 和 __VUE_PROD_DEVTOOLS__ 对应的值都是 Boolean 类型，分别代表的是：__VUE_OPTIONS_API__：表示是否支持 options api 的写法，默认是 true；__VUE_PROD_DEVTOOLS__：表示生产包是否要继续支持 devtools 插件，默认是 false；即便它们都有默认值，可以不进行设置，但是 Vue 希望我们自己去设置这两个配置，毕竟如果完全拥抱 Vue3 的话，写法上没有必要在使用 options api 的格式，这样在打包的时候，包的体量上也会有所减少.
+
+## 13. 定义环境变量
+因为在 webpack 中，所有的环境变量都会被当作字符串来处理，如果你不使用 JSON.stringify 方法来转换变量的值，那么在 webpack 中，这个变量的值可能会被当作一个未定义的变量来处理，从而导致编译错误。
+```js
+new DefinePlugin({
+  process: {
+    env: {
+      NODE_ENV: JSON.stringify('development')
+    }
+  }
+})
+```
 
 # 二、webpack高级配置
 ## 1. 开发环境和生产环境的sourceMap
@@ -125,6 +137,7 @@ if (module.hot) {
 
 ## 5. cache缓存
 每次打包js文件都需要经过eslint检查和babel编译，速度比较慢。我们可以缓存之前的eslint检查和babel编译，这样二次打包速度就会更快。
+缓存打包文件会放在`node_modules/.cache`中。
 
 1. eslint会默认开启缓存
 2. babel需要配置
