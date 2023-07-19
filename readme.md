@@ -58,7 +58,7 @@ npm run test    # 测试代码分割
 2. .eslintignore  配置vscode的eslint插件忽略检查哪些文件
 3. webpack中的eslint是不会检查dist文件夹和node_modules文件夹的
 
-### 8.2 babel(语法降级)
+### 8.2 babel(语法降级)(yarn add babel-loader @babel/preset-env -D)
 
 ## 9. 处理ts(yarn add typescript ts-loader -D)
 需要创建tsconfig.json文件
@@ -71,7 +71,7 @@ npm run test    # 测试代码分割
 // webpack会给以下浏览器做兼容性处理
 "browserslist": [
   "> 1%",   // 全球超过1%人使用的浏览器
-  "last 2 versions" // 所有浏览器兼容到最后两个版本根据 CanIUse.com 踪的版本
+  "last 2 versions" // 所有浏览器兼容到最后两个版本   CanIUse.com 网站查看版本兼容性
 ]
 ```
 

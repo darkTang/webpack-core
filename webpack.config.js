@@ -15,7 +15,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "js/chunk-[contenthash].js",
-    // 指定图片资源的输出目录，默认是[hash][ext][query]
+    // 指定所有静态资源的输出目录，默认是[hash][ext][query]
     // assetModuleFilename: "images/[hash][ext][query]",
     clean: true,
   },
@@ -79,7 +79,7 @@ module.exports = {
           },
           {
             test: /\.(png|jpe?g|gif|svg|webp|bmp)$/,
-            type: "asset",
+            type: "asset", // 不写parser，默认为8kb
             parser: {
               dataUrlCondition: {
                 maxSize: 10 * 1024, // 10kb
@@ -151,6 +151,7 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: "css/chunk-[contenthash].css",
+      chunkFilename: "css/[name]-chunk-[contenthash:10].css", // 动态导入css文件命名，与动态引入js类似
     }),
     // 会自动应用.eslintrc.js的文件的配置
     new ESLintWebpackPlugin({
@@ -160,6 +161,7 @@ module.exports = {
       threads,
     }),
     new VueLoaderPlugin(),
+    // vue3中是否需要支持选项式API和devtools
     new DefinePlugin({
       __VUE_PROD_DEVTOOLS__: false,
       __VUE_OPTIONS_API__: false,
