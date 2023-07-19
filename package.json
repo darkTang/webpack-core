@@ -5,10 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "author": "darkTang",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/darkTang/webpack-core"
-  },
+  "repository": "git@github.com:darkTang/webpack-core.git",
   "scripts": {
     "base": "webpack",
     "dev": "webpack serve",
