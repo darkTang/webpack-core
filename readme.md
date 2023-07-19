@@ -20,8 +20,8 @@ npm run test    # 测试代码分割
 2. css-loader  css-loader默认开启css模块化
 3. 使用`style-loader`，css的HMR是生效的，因为在css发生变化时，不需要请求css资源；但是使用`MiniCssExtractPlugin.loader`可能会使css的HMR是失效，因为css发生变化，HMR会重新请求css资源，由于请求css资源的类型不对导致发生这样的错误：
 `Refused to apply style from 'http://localhost:8081/css/main.4177611702ae1e479347.css?1689767819542' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.`
-1. `MiniCssExtractPlugin.loader`是通过link标签引入css资源，相比较直接通过style标签的引入，加载性能更好。（style标签引入css样式在网速较差时，会出现闪屏现象）
-2. 因此我们可以在开发模式使用`style-loader`，在生产模式下使用`MiniCssExtractPlugin.loader`
+3. `MiniCssExtractPlugin.loader`是通过link标签引入css资源，相比较直接通过style标签的引入，加载性能更好。（style标签引入css样式在网速较差时，会出现闪屏现象）
+4. 因此我们可以在开发模式使用`style-loader`，在生产模式下使用`MiniCssExtractPlugin.loader`
 ```js
 {
   module: {
