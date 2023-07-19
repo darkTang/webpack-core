@@ -17,7 +17,24 @@ npm run test    # 测试代码分割
 
 ## 1. 处理css
 1. style-loader/MiniCssExtractPlugin.loader
-2. css-loader
+2. css-loader  css-loader可以开启css模块化
+```js
+{
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: {
+          loader: 'css-loader',
+          options: {
+            modules: true      // 开启css模块化
+          }
+        }
+      }
+    ]
+  }
+}
+```
 
 ## 2. 处理less(yarn add less less-loader -D)
 1. style-loader/MiniCssExtractPlugin.loader
