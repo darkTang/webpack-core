@@ -1,3 +1,15 @@
+# 文件描述
+- `webpack.config.js`：webpack的基础配置
+- `config`：文件夹中有两套配置，开发/生产
+- `webpack.codesplit.js`：测试代码分割
+
+# Examples
+```shell
+npm run serve   # 开发模式
+npm run build   # 生产模式
+npm run test    # 测试代码分割
+```
+
 # 一、webpack基础配置
 1. webpack 默认导入路径必须要带文件后缀。
 2. vite 默认导入路径不需要带文件后缀，内部做了处理。
@@ -119,7 +131,7 @@ if (module.hot) {
 ```js
 options: {
   cacheDirectory: true, // 开启babel缓存
-  cacheCompression: false, // 关闭缓存文件压缩，包速度
+  cacheCompression: false, // 关闭缓存文件压缩，提升打包速度
 },
 ```
 
@@ -140,7 +152,7 @@ options: {
 Babel为编译的每个文件都插入辅助代码，使代码体积过大！
 Babel对一些公共方法使用了非常小的辅助代码，比如_extend，默认情况下会被添加到每一个需要它的文件中。
 可以将这些辅助代码作为一个独立模块，来避免重复引入。
-`@babel/plugin-transform-runtime`禁用Babel自动对每个文件的runtime注入，而是使所有辅助代码从这里引入
+`@babel/plugin-transform-runtime`禁用Babel自动对每个文件的runtime注入，而是使所有辅助代码从这里引入。
 
 ## 9. 本地静态图片压缩(可能出现包下载不了的情况)
 `yarn add image-minimizer-webpack-plugin imagemin -D`

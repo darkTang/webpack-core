@@ -7,8 +7,6 @@
   "author": "darkTang",
   "repository": "git@github.com:darkTang/webpack-core.git",
   "scripts": {
-    "base": "webpack",
-    "dev": "webpack serve",
     "serve": "webpack serve --config ./config/webpack.dev",
     "build": "webpack --config ./config/webpack.prod",
     "test": "webpack --config ./webpack.codesplit"
