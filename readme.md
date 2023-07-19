@@ -92,7 +92,7 @@ export default {
 
 # 二、webpack高级配置
 ## 1. 开发环境和生产环境的sourceMap
-1. 路径问题：相对路径还是相对于项目根目录而言，但是绝对路径是相当于当前目录
+1. 路径问题：相对路径是相对于项目运行根目录而言，`webpack.base.js`文件运行时还是在项目根目录中，但是绝对路径是相当于当前目录
 2. 生产模式自动压缩html和js代码
 3. css-minimizer-webpack-plugin用来压缩css代码
 4. sourceMap 开发模式下建议inline-source-map/cheap-module-source-map，生产模式建议source-map

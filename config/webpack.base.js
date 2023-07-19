@@ -11,7 +11,7 @@ const threads = os.cpus().length;
 exports.threads = threads;
 
 module.exports = {
-  // 相对路径还是相对于项目根目录而言，但是绝对路径是相当于当前目录
+  // 相对路径是相对于项目运行根目录而言，该文件运行时还是在项目根目录中，但是绝对路径是相当于当前目录
   entry: "./src/main.js",
   output: {
     path: path.resolve(__dirname, "../dist"),
