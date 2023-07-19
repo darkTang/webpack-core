@@ -7,7 +7,7 @@
   "author": "darkTang",
   "repository": {
     "type": "git",
-    "url": "https://github.com/darkTang/webpack-core"
+    "url": "git@github.com:darkTang/webpack-core.git"
   },
   "scripts": {
     "base": "webpack",
