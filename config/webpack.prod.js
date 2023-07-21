@@ -39,7 +39,7 @@ module.exports = merge(webpackBase, {
           test: /[\\/]node_modules[\\/]/, // 需要打包到一起的模块
           priority: -10, // 权重（越大越高）
           reuseExistingChunk: true, // 如果当前chunk包含已从主bundle中拆分出的模块，则它将被重用，而不是生成新的模块
-          name: "node_modules-chunk", // 给打包后的js文件命名，默认为随机数字，这里的name会传给entry入口文件
+          name: "node_modules-chunk", // 给打包后的js文件命名，默认为随机数字，这里的name会传给output的filename的[name]入口文件
         },
       },
     },

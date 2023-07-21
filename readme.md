@@ -101,13 +101,15 @@ npm run test    # 测试代码分割
 2. enforce: "pre"|"post"
 
 ## 12. 处理Vue3(yarn add vue vue-loader @vue/compiler-sfc -D)
-1. 不能处理<script lang="ts" setup></script>写法，可以处理
+1. 不能处理<script lang="ts" setup></script>写法，只能处理
 ```vue
+<script>
 export default {
   setup() {
 
   }
 }
+</script>
 ```
 2. 其中 __VUE_OPTIONS_API__ 和 __VUE_PROD_DEVTOOLS__ 对应的值都是 Boolean 类型，分别代表的是：__VUE_OPTIONS_API__：表示是否支持 options api 的写法，默认是 true；__VUE_PROD_DEVTOOLS__：表示生产包是否要继续支持 devtools 插件，默认是 false；即便它们都有默认值，可以不进行设置，但是 Vue 希望我们自己去设置这两个配置，毕竟如果完全拥抱 Vue3 的话，写法上没有必要在使用 options api 的格式，这样在打包的时候，包的体量上也会有所减少.
 
@@ -248,6 +250,13 @@ webpack5已经内置，只需要在import依赖时开启即可。
 我们最终输出三个文件：main、math、runtime。当 math 文件发送变化，变化的是 math 和 runtime 文件，main 不变。
 runtime 文件只保存文件的 hash 值和它们与文件关系，整个文件体积就比较小，所以变化重新请求的代价也小。
 
+- warning：在webpack 5中，[hash]被废弃了，取而代之的是[fullhash]、[chunkhash]和[contenthash]。这是因为在webpack 5中，[hash]的生成方式发生了变化，可能会导致缓存失效的问题。
+如果你想要使用类似[hash]的占位符，可以考虑使用[fullhash]、[chunkhash]或[contenthash]。这些占位符的含义如下：
+
+[fullhash]：根据整个构建过程生成的哈希值，可以保证在构建过程中任何文件内容的改变都会导致哈希值的变化。
+[chunkhash]：根据每个chunk的内容生成的哈希值，可以保证只有该chunk内容发生改变时，哈希值才会变化。
+[contenthash]：根据文件内容生成的哈希值，可以保证只有文件内容发生改变时，哈希值才会变化。
+
 ## 13. core-js (yarn add core-js)
 过去我们使用 babel 对 js 代码进行了兼容性处理，其中使用`@babel/preset-env`智能预设来处理兼容性问题。
 它能将 ES6 的一些语法进行编译转换，比如箭头函数、点点点运算符等。但是如果是 async 函数、promise 对象、数组的一些方法（includes）等，它没办法处理。
@@ -271,6 +280,8 @@ polyfill翻译过来叫做垫片/补丁。就是用社区上提供的一段代�
 开发 Web App 项目，项目一旦处于网络离线情况，就没法访问了。我们希望给项目提供离线体验。
 
 渐进式网络应用程序(progressive web application - PWA)：是一种可以提供类似于 native app(原生应用程序) 体验的 Web App 的技术。其中最重要的是，在 离线(offline) 时应用程序能够继续运行功能。内部通过 Service Workers 技术实现的。
+
+需要在配置文件的plugins配置，并且需要在入口文件main.js注册PWA。
 
 - 问题：兼容性较差。并且会出现资源请求路径问题。
 - 解决：`npm i -g serve`    `serve dist` 将会开启一个server服务器，将dist作为根目录
