@@ -101,13 +101,15 @@ npm run test    # 测试代码分割
 2. enforce: "pre"|"post"
 
 ## 12. 处理Vue3(yarn add vue vue-loader @vue/compiler-sfc -D)
-1. 不能处理<script lang="ts" setup></script>写法，可以处理
+1. 不能处理<script lang="ts" setup></script>写法，只能处理
 ```vue
+<script>
 export default {
   setup() {
 
   }
 }
+</script>
 ```
 2. 其中 __VUE_OPTIONS_API__ 和 __VUE_PROD_DEVTOOLS__ 对应的值都是 Boolean 类型，分别代表的是：__VUE_OPTIONS_API__：表示是否支持 options api 的写法，默认是 true；__VUE_PROD_DEVTOOLS__：表示生产包是否要继续支持 devtools 插件，默认是 false；即便它们都有默认值，可以不进行设置，但是 Vue 希望我们自己去设置这两个配置，毕竟如果完全拥抱 Vue3 的话，写法上没有必要在使用 options api 的格式，这样在打包的时候，包的体量上也会有所减少.
 
