@@ -281,6 +281,8 @@ polyfill翻译过来叫做垫片/补丁。就是用社区上提供的一段代�
 
 渐进式网络应用程序(progressive web application - PWA)：是一种可以提供类似于 native app(原生应用程序) 体验的 Web App 的技术。其中最重要的是，在 离线(offline) 时应用程序能够继续运行功能。内部通过 Service Workers 技术实现的。
 
+需要在配置文件的plugins配置，并且需要在入口文件main.js注册PWA。
+
 - 问题：兼容性较差。并且会出现资源请求路径问题。
 - 解决：`npm i -g serve`    `serve dist` 将会开启一个server服务器，将dist作为根目录
 - `serve dist -p 9000` 指定端口号
