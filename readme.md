@@ -10,6 +10,11 @@ npm run build   # 生产模式
 npm run test    # 测试代码分割
 ```
 
+# 模板字符串
+在Webpack中，[ext]占位符在实际使用中确实不包含.。所以，当你使用[hash][ext][query]模板时，生成的文件名会是类似1234567890abcdefjs的形式。
+然而，Webpack在处理assetModuleFilename配置时，会自动添加.在[ext]前面，这是因为assetModuleFilename主要用于处理非入口（non-entry）的资源文件，如图片、字体等，这些文件的扩展名通常需要包含.。
+对于filename配置，它主要用于处理入口（entry）文件，通常是JavaScript文件。在这种情况下，你需要手动添加.在[ext]前面，例如[hash].[ext][query]，以生成正确的文件名。
+
 # 一、webpack基础配置
 1. webpack 默认导入路径必须要带文件后缀。
 2. vite 默认导入路径不需要带文件后缀，内部做了处理。
