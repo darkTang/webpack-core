@@ -254,10 +254,9 @@ webpack5已经内置，只需要在import依赖时开启即可。
 我们最终输出三个文件：main、math、runtime。当 math 文件发送变化，变化的是 math 和 runtime 文件，main 不变。
 runtime 文件只保存文件的 hash 值和它们与文件关系，整个文件体积就比较小，所以变化重新请求的代价也小。
 
-- warning：在webpack 5中，[hash]被废弃了，取而代之的是[fullhash]、[chunkhash]和[contenthash]。这是因为在webpack 5中，[hash]的生成方式发生了变化，可能会导致缓存失效的问题。
-如果你想要使用类似[hash]的占位符，可以考虑使用[fullhash]、[chunkhash]或[contenthash]。这些占位符的含义如下：
+- 在webpack 4中，用的是[hash]，webpack5取而代之的是[fullhash]/[hash]、[chunkhash]和[contenthash]。这些占位符的含义如下：
 
-[fullhash]：根据整个构建过程生成的哈希值，可以保证在构建过程中任何文件内容的改变都会导致哈希值的变化。
+[fullhash]/[hash]：根据整个构建过程生成的哈希值，可以保证在构建过程中任何文件内容的改变都会导致哈希值的变化。
 [chunkhash]：根据每个chunk的内容生成的哈希值，可以保证只有该chunk内容发生改变时，哈希值才会变化。
 [contenthash]：根据文件内容生成的哈希值，可以保证只有文件内容发生改变时，哈希值才会变化。
 
