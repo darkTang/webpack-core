@@ -32,7 +32,7 @@ module.exports = {
       // enforceSizeThreshold: 50000, // 超过50kb一定会单独打包（此时会忽略minRemainingSize、maxAsyncRequests、maxInitialRequests）
       // cacheGroups: {  // 哪些模块要打包到一个组
       //   defaultVendors: {  // 组名
-      //     test: /[\\/]node_modules[\\/]/,  // 需要打包到一起的模块
+      //     test: /[\\/]node_modules[\\/]/,  // 需要打包到一起的模块 [\\/]是为了避免有的路径分隔符为 / 或 \
       //     priority: -10,  // 权重（越大越高）
       //     reuseExistingChunk: true,  // 如果当前chunk包含已从主bundle中拆分出的模块，则它将被重用，而不是生成新的模块
       //     name: "node_modules", 给打包后的js文件命名，默认为随机数字
