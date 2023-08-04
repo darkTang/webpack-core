@@ -5,7 +5,7 @@ module.exports = merge(webpackBase, {
   mode: "development",
   devtool: "cheap-module-source-map",
   devServer: {
-    open: true,
+    // open: true,
     hot: true,
   },
 });

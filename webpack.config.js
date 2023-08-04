@@ -168,11 +168,17 @@ module.exports = {
       __VUE_OPTIONS_API__: false,
       // 定义环境变量
       // 因为在 webpack 中，所有的环境变量都会被当作字符串来处理，如果你不使用 JSON.stringify 方法来转换变量的值，那么在 webpack 中，这个变量的值可能会被当作一个未定义的变量来处理，从而导致编译错误。
-      process: {
-        erv: {
-          NODE_ENV: JSON.stringify("development"),
-        },
-      },
+      // 如果直接写成字符串，如 'production'，在webpack编译过程中，会执行eval('production') = production 这个变量。
+      //  eval('"production"') = 'production'
+      // process: {
+      //   erv: {
+      //     NODE_ENV: JSON.stringify("development"),
+      //   },
+      // },
+      "process.env": JSON.stringify({
+        ...process.env,
+        NODE_ENV: "development",
+      }),
     }),
   ],
   // 开启开发服务器，则不会输出资源，在内存中编译打包

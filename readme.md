@@ -122,8 +122,14 @@ export default {
 
 ## 13. 定义环境变量
 因为在 webpack 中，所有的环境变量都会被当作字符串来处理，如果你不使用 JSON.stringify 方法来转换变量的值，那么在 webpack 中，这个变量的值可能会被当作一个未定义的变量来处理，从而导致编译错误。
+如果直接写成字符串，如 'production'，在webpack编译过程中，会执行`eval('production') = production`这个变量，production变量不存在就会报错。
+使用JSON字符串就会解析为`eval('"production"') = 'production'`。
 
 - 要想在代码中使用环境变量，必须要在webpack中用DefinePlugin定义。
+- 在node端，可以通过`process.env`获取到环境变量，但是如果想让浏览器端也可以使用，则需要在webpack配置，将`process.env`暴露出去成为一个全局变量。
+- webpack默认不会识别 `.env` 文件，如果需要识别话，可以使用`dotenv`插件。（yarn add dotenv -D）
+- dotenv 插件会自动读取项目根目录下的 .env 文件，并将其中定义的环境变量注入到 Webpack 的构建环境中。
+- 详细配置 https://github.com/motdotla/dotenv
 ```js
 new DefinePlugin({
   process: {

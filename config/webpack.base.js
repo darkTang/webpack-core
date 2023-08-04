@@ -6,6 +6,10 @@ const os = require("os");
 const { VueLoaderPlugin } = require("vue-loader");
 const { DefinePlugin } = require("webpack");
 
+// 作用就是将自定义的环境变量和合并到process.env中
+// path：默认就是查找 .env
+require("dotenv").config({ path: "./.env" });
+
 // 获取cpu核数
 const threads = os.cpus().length;
 exports.threads = threads;
@@ -145,6 +149,13 @@ module.exports = {
     new DefinePlugin({
       __VUE_PROD_DEVTOOLS__: false,
       __VUE_OPTIONS_API__: false,
+      // process: {
+      //   env: {
+      //     NODE_ENV: JSON.stringify("development"),
+      //     A_V: JSON.stringify("aaa"),
+      //   },
+      // },
+      "process.env": JSON.stringify(process.env), // 再将process.env暴露出去
     }),
   ],
 };
